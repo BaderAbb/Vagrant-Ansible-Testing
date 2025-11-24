@@ -58,7 +58,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "lb" do |lb|
     lb.vm.network "private_network", ip: "192.168.33.100"
 
-    lb.vm.network "forwarded_port", guest: 80, host: 8080
+    lb.vm.network "forwarded_port", guest: 80, host: 8090
     lb.vm.network "forwarded_port", guest: 1936, host: 1936
 
     lb.vm.synced_folder ".", "/vagrant"
@@ -90,9 +90,37 @@ Vagrant.configure("2") do |config|
     db.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "provision/site.yml"
       ansible.extra_vars = { 
-        "mi_rol" => "database" 
+        "mi_rol" => "database",
+        "ansible_python_interpreter" => "/usr/bin/python3"
       }
     end
   end
+
+  # --- MAQUINA 5: MONITORING (prometheus + grafana) ---
+  config.vm.define "monitor" do |mon| 
+    mon.vm.network "private_network", ip: "192.168.33.50"
+    mon.vm.host_name = "monitor"
+
+    #grafana
+    mon.vm.network "forwarded_port", guest: 3000, host: 3000
+    #prometheus
+    mon.vm.network "forwarded_port", guest: 9090, host: 9090
+
+    mon.vm.synced_folder ".", "/vagrant"
+    
+    mon.vm.provider "virtualbox" do |vb|
+      vb.name = "monitor"
+      vb.memory = "1024"
+    end
+
+    mon.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "provision/site.yml"
+      ansible.extra_vars = { 
+        "mi_rol" => "monitor_server",
+        "ansible_python_interpreter" => "/usr/bin/python3"
+      }
+    end
+  end
+
 
 end

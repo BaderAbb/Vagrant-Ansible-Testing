@@ -11,3 +11,14 @@
   apt:
     name: ['curl', 'vim', 'htop', 'net-tools']
     state: present
+
+- name: install prometheus-node-exporter
+  apt:
+    name: ['prometheus-node-exporter']
+    state: present
+
+- name: enable and start prometheus-node-exporter
+  service:
+    name: prometheus-node-exporter
+    state: started
+    enabled: yes

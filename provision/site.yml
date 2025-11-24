@@ -25,3 +25,8 @@
       include_role:
         name: database
       when: mi_rol == "database"
+
+    - name: Aply rol Monitor if the host is monitor
+      include_role:
+        name: monitor_server
+      when: mi_rol == "monitor_server"

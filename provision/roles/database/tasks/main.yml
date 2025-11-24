@@ -26,9 +26,9 @@
     name: "{{ db_name }}"
     state: present
 
-- name: edit 50-server.conf
+- name: edit 50-server.cnf
   lineinfile:
-    path: /etc/mysql/mariadb.conf.d/50-server.conf
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
     regexp: '^bind-address'
     line: 'bind-address = 0.0.0.0'
   notify: restart mariadb

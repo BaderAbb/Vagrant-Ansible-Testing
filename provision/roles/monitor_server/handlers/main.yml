@@ -1,0 +1,5 @@
+---
+- name: Reiniciar Prometheus
+  service:
+    name: prometheus
+    state: restarted

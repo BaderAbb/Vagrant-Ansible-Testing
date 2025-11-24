@@ -1,0 +1,5 @@
+# --- Dependencias ---
+.vagrant/
+
+# --- Archivos de logs ---
+*.log

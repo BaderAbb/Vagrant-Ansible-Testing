@@ -1,0 +1,47 @@
+---
+# 1. Necesario para descargar cosas por HTTPS
+- name: Instalar dependencias previas
+  apt:
+    name: ['apt-transport-https', 'software-properties-common', 'wget']
+    state: present
+    update_cache: yes
+
+# 2. Bajar la llave de seguridad (GPG) para confirmar que el paquete es original
+- name: Añadir clave GPG de Grafana
+  apt_key:
+    url: https://apt.grafana.com/gpg.key
+    state: present
+
+# 3. Añadir la "tienda" (repositorio) de Grafana a Ubuntu
+- name: Añadir repositorio oficial de Grafana
+  apt_repository:
+    repo: "deb https://apt.grafana.com stable main"
+    state: present
+    filename: grafana
+
+# 4. AHORA sí podemos instalarlo (Prometheus sí está en los repos de Ubuntu)
+- name: Instalar Prometheus y Grafana
+  apt:
+    name: ['prometheus', 'grafana']
+    state: present
+    update_cache: yes # Importante para que lea el nuevo repo
+
+# CONFIGURACIÓN DE PROMETHEUS (Lo más difícil)
+# Prometheus necesita saber A QUIÉN vigilar. 
+# Necesitamos crear un archivo prometheus.yml y poner las IPs de tus máquinas.
+
+- name: Configurar Prometheus (prometheus.yml)
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    mode: '0644'
+  notify: Reiniciar Prometheus
+
+- name: Asegurar servicios corriendo
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - prometheus
+    - grafana-server

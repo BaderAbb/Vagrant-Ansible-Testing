@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 15s # Preguntar cada 15 segundos
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'mi_proyecto_vagrant'
+    static_configs:
+      # AQUÍ ESTÁ LA MAGIA: Listamos todas tus máquinas y su puerto 9100
+      - targets: 
+        - '192.168.33.10:9100'  # Web1
+        - '192.168.33.11:9100'  # Web2
+        - '192.168.33.20:9100'  # Database
+        - '192.168.33.100:9100' # Load Balancer
+        - '192.168.33.50:9100'  # El propio monitor
