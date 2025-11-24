@@ -1,0 +1,34 @@
+---
+- name: install MariaDB, python3-mysqldb and PyMySQL
+  apt:
+    name: ['mariadb-server', 'python3-mysqldb', 'python3-pymysql']
+    state: present
+    update_cache: yes
+
+- name: start MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: create user app_user
+  mysql_user:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    user: "{{ db_user }}"
+    password: "{{ db_pass }}"
+    host: '192.168.33.%'
+    priv: "*.*:ALL"
+    state: present
+
+- name: create database webapp_db
+  mysql_db:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name: "{{ db_name }}"
+    state: present
+
+- name: edit 50-server.conf
+  lineinfile:
+    path: /etc/mysql/mariadb.conf.d/50-server.conf
+    regexp: '^bind-address'
+    line: 'bind-address = 0.0.0.0'
+  notify: restart mariadb

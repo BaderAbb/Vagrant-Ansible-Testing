@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    db_host: "192.168.33.20"
+    db_name: "webapp_db"
+    db_user: "app_user"
+    db_pass: "password123"
+    db_port: "3306"
+  roles:
+    - common
+  
+  tasks:
+    - name: Aply rol Webserver if the host is webserver
+      include_role:
+        name: webserver
+      when: mi_rol == "web"
+
+    - name: Aply rol LoadBalancer if the host is loadbalancer
+      include_role:
+        name: loadbalancer
+      when: mi_rol == "lb"
+
+    - name: Aply rol Database if the host is database
+      include_role:
+        name: database
+      when: mi_rol == "database"

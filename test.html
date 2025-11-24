@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Chewy&display=swap');
+
+  :root {
+    --color-turquesa: #559E98;
+    --color-amarillo: #F4D03F;
+    --color-texto: #666;
+    --color-fondo: #fdfaf6;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-fondo);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .job-section-container {
+    display: flex;
+    /* AQUÍ ESTÁ EL CAMBIO: row-reverse pone la imagen (segundo hijo en HTML) a la izquierda */
+    flex-direction: row-reverse; 
+    align-items: center;
+    gap: 80px;
+    max-width: 1100px;
+    background: white;
+    padding: 60px;
+    border-radius: 40px;
+    /* Una sombra un poco diferente, más nítida */
+    box-shadow: 0 25px 50px -12px rgba(85, 158, 152, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* TEXTO (DERECHA) */
+  .text-content {
+    flex: 1;
+    z-index: 2;
+  }
+
+  .eyebrow {
+    color: var(--color-amarillo);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    display: inline-block;
+    border-bottom: 2px solid var(--color-amarillo);
+  }
+
+  h2 {
+    color: var(--color-turquesa);
+    font-family: 'Chewy', cursive;
+    font-size: 3rem;
+    line-height: 1.1;
+    margin: 0 0 30px 0;
+  }
+
+  p {
+    color: var(--color-texto);
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 25px;
+  }
+
+  /* Resaltamos las partes clave del texto */
+  .highlight {
+    color: var(--color-turquesa);
+    font-weight: 700;
+  }
+  
+  .cta-button {
+      background-color: var(--color-amarillo);
+      color: #fff;
+      text-decoration: none;
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-block;
+      box-shadow: 0 10px 20px -10px rgba(244, 208, 63, 0.5);
+      transition: all 0.3s ease;
+  }
+  
+  .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px -10px rgba(244, 208, 63, 0.7);
+      background-color: #e3c032;
+  }
+
+  /* IMAGEN (IZQUIERDA) */
+  .image-content {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 500px; /* Altura fija para que el recorte funcione bien */
+  }
+
+  /* El truco de la forma orgánica en la propia foto */
+  .masked-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Esta es la magia: CSS Clip-path para recortar la foto */
+    clip-path: path('M435.5,109.5c46.5,62,79,149.1,56.2,221.9c-22.8,72.8-100.9,131.2-173.7,134.5c-72.8,3.3-140.3-48.6-192.1-106.6C74.1,301.3,37.7,237,33.5,173.2C29.3,109.4,57.4,46.1,113.8,17.7C170.3-10.7,255.1-4.3,324.4,35.4C393.7,75.1,447.5,148.2,435.5,109.5z');
+    z-index: 2;
+  }
+  
+  /* Un elemento decorativo sutil detrás */
+  .image-decoration {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 110%;
+      height: 110%;
+      border: 3px dashed var(--color-amarillo);
+      border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; 
+      opacity: 0.3;
+      z-index: 1;
+      animation: spin-slow 30s linear infinite;
+  }
+  
+  @keyframes spin-slow {
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .job-section-container {
+      flex-direction: column; /* Foto arriba en móvil */
+      text-align: center;
+      padding: 40px 30px;
+      gap: 40px;
+    }
+    .eyebrow { border-bottom: none; display: block; }
+    .image-content { height: 350px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="job-section-container">
+  
+  <div class="text-content">
+    <span class="eyebrow">Crecimiento Profesional</span>
+    <h2>Y la Bolsa de Trabajo</h2>
+    
+    <p>
+      Al unirte a nuestras píldoras, no solo accederás a formación exclusiva, sino que también realizarás <strong>horas de prácticas en nuestro Espacio Infantil El Camino</strong>.
+    </p>
+    
+    <p>
+      Formarás parte activa de nuestro equipo, aprendiendo desde dentro y aplicando todo lo aprendido en un entorno real y respetuoso. Además, al finalizar, entrarás automáticamente en nuestra <span class="highlight">bolsa de trabajo, con prioridad para futuras vacantes.</span>
+    </p>
+
+    <p>
+      Una experiencia completa para crecer profesionalmente y conectar con tu vocación de manera profunda y práctica.
+    </p>
+    
+    <a href="#" class="cta-button">¡Quiero formar parte!</a>
+  </div>
+
+  <div class="image-content">
+    <div class="image-decoration"></div>
+    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+         alt="Bolsa de trabajo El Camino" class="masked-photo"> 
+  </div>
+
+</div>
+
+</body>
+</html>

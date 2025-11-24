@@ -1,0 +1,34 @@
+---
+- name: Install nginx, php-fpm and php-mysql
+  apt:
+    name: ['nginx', 'php-fpm', 'php-mysql']
+    state: present
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: deploy the dynamic index.php
+  template:
+    src: index.php.j2
+    dest: /var/www/html/index.php
+    mode: '0644'
+  notify: restart nginx
+
+- name: delete index.html file
+  file:
+    path: /var/www/html/index.html
+    state: absent
+
+# --- CONFIGURACIÓN CRÍTICA DE NGINX ---
+# Esto le enseña a Nginx cómo procesar archivos .php
+- name: Configurar PHP en el default site de Nginx
+  copy:
+    src: nginx-default
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart nginx

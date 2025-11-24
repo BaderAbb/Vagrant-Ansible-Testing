@@ -1,0 +1,27 @@
+<html>
+<head><title>Prueba de Conexión DB</title></head>
+<body>
+    <h1>Estado del Sistema</h1>
+    <p>Rol de la máquina (Ansible): <b>{{ mi_rol }}</b></p>
+    
+    <h2>Prueba de Base de Datos</h2>
+    <?php
+    // Usamos las variables de Ansible aquí con doble llave
+    $servername = "{{ db_host }}";
+    $username = "{{ db_user }}";
+    $password = "{{ db_pass }}";
+    $dbname = "{{ db_name }}";
+
+    // Crear conexión
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Verificar conexión
+    if ($conn->connect_error) {
+        die("<p style='color:red'>❌ Fallo en la conexión: " . $conn->connect_error . "</p>");
+    }
+    echo "<p style='color:green'>✅ ¡ÉXITO! Conectado a la base de datos MariaDB en $servername</p>";
+    
+    $conn->close();
+    ?>
+</body>
+</html>

@@ -1,0 +1,30 @@
+---
+- name: Install HAProxy
+  apt:
+    name: haproxy
+    state: present
+
+# Configure /etc/haproxy/haproxy.cfg
+- name: Configure /etc/haproxy/haproxy.cfg
+  blockinfile:
+    path: /etc/haproxy/haproxy.cfg
+    block: |
+      frontend http_front
+        bind *:80
+        default_backend http_back
+      
+      backend http_back
+        cookie SERVERID insert indirect nocache
+
+        balance roundrobin
+
+        server web1 192.168.33.10:80 check cookie s1
+        server web2 192.168.33.11:80 check cookie s2
+
+      listen stats
+        bind *:1936
+        stats enable
+        stats uri /
+        stats hide-version
+        stats auth admin:password123
+  notify: Restart HAProxy
